@@ -1,13 +1,15 @@
 const express = require('express');
 const router = express.Router();
-// const path = require('path');
 const controller = require('../controllers/controller.js');
-
-console.log(controller);
+// const path = require('path');
+// console.log(controller);
 
 router.get('/', controller.homepage);
-router.get('/details', controller.getDetails);
-router.post('/details', controller.postDetails);
-router.post('/newIntern', controller.newIntern);
+router.get('/allInterns', controller.allInterns);
+// router.get('/getInfo', controller.getInfo);
+router.get('/getInfo/:id', controller.getInfo);
+router.post('/addIntern', controller.addIntern);
+router.post('/removeIntern', controller.removeIntern);
+// router.post('/details', controller.postDetails);
 
 module.exports = router;
