@@ -37,6 +37,11 @@ class Intern {
         // console.log(this.totalInterns);
         return this.totalInterns;
     }
+
+    static async removeIntern(id) {
+        const sqlQuery = `DELETE FROM details WHERE id=${id};`;
+        const remove = await db.execute(sqlQuery);
+    }
 }
 
 module.exports = Intern;

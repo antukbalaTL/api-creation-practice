@@ -75,8 +75,14 @@ const addIntern = async (req, res, next) => {
     // res.send(JSON.stringify(intern));
 }
 
-const removeIntern = (req, res) => {
-    res.send(`testing`);
+const removeIntern = async (req, res) => {
+    const id = req.body.id;
+    let removedIntern = await Intern.getInfoById(id);
+    removedIntern = removedIntern[0];
+    console.log(removedIntern);
+    await Intern.removeIntern(id);
+    res.send(removedIntern);
+    console.log(`Removed intern- id: ${removedIntern.id}, name: ${removedIntern.name}, university: ${removedIntern.university}, height: ${removedIntern.height}`);
 };
 
 module.exports = {

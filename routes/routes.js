@@ -9,7 +9,7 @@ router.get('/allInterns', controller.allInterns);
 // router.get('/getInfo', controller.getInfo);
 router.get('/getInfo/:id', controller.getInfo);
 router.post('/addIntern', controller.addIntern);
-router.post('/removeIntern', controller.removeIntern);
+router.delete('/removeIntern', controller.removeIntern);
 // router.post('/details', controller.postDetails);
 
 module.exports = router;
