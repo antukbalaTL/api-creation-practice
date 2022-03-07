@@ -65,7 +65,6 @@ class Intern {
 
     /* method to check mobile number already used or not */
     static async alreadyExist(mobile) {
-
         /* sql query for counting total interns */
         const sqlQuery = `select count(tlid) from details where mobile='${mobile}';`;
 
@@ -93,14 +92,25 @@ class Intern {
         return this.totalInterns;
     }
 
+
+
+    /* method to remove an intern */
     static async removeIntern(tlid) {
-        /* method to remove an intern */
+        /* sql query to check if the tlid exist or not */
+        var sqlQuery1 = `select count(tlid) from details where tlid='${tlid}';`;
 
         /* sql query for finding intern id to delete */
-        const sqlQuery = `DELETE FROM details WHERE tlid='${tlid}';`;
+        const sqlQuery2 = `DELETE FROM details WHERE tlid='${tlid}';`;
 
-        /* execute the sql query */
-        const remove = await db.execute(sqlQuery);
+        /* execute the sql query1 */
+        const doesNotExist = await db.execute(sqlQuery1);
+
+        if (doesNotExist[0][0]['count(tlid)'] === 0) {
+            return 0;
+        }
+
+        /* execute the sql query2 */
+        const remove = await db.execute(sqlQuery2);
     }
 }
 

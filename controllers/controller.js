@@ -75,7 +75,7 @@ const addIntern = async (req, res) => {
     /* check mobile number already used or not */
     const usedOrNot = await Intern.alreadyExist(mobile);
 
-    /* if number not used then create new intern */
+    /* if mobile number not used then create new intern */
     if (usedOrNot === 0) {
         /* method to generate TLID when create a new intern */
         /* generate a 6 digit unique number */
@@ -103,6 +103,7 @@ const addIntern = async (req, res) => {
     }
 
     /* if number used then send this */
+    console.log(`User already exist`);
     return res.send(`User already exist`);
 }
 
@@ -116,15 +117,23 @@ const removeIntern = async (req, res) => {
     /* get details of the intern before removing */
     let removedIntern = await Intern.getInfoById(tlid);
     removedIntern = removedIntern[0];
-    console.log(removedIntern);
 
-    /* remove intern from model */
-    await Intern.removeIntern(tlid);
 
-    /* show who is removed */
-    res.send(removedIntern);
-    console.log(`Removed intern- id: ${removedIntern.tlid}, name: ${removedIntern.name}, university: ${removedIntern.university}, mobile: ${removedIntern.mobile}`);
+    if (typeof removedIntern === 'undefined') {
+        res.send(`User doesn't exist`);
+        console.log(`User doesn't exist`);
+    }
+    else {
+        /* remove intern from model */
+        await Intern.removeIntern(tlid);
+
+        /* show who is removed */
+        res.send(removedIntern);
+        console.log(`Removed intern- id: ${removedIntern.tlid}, name: ${removedIntern.name}, university: ${removedIntern.university}, mobile: ${removedIntern.mobile}`);
+    }
 };
+
+
 
 const generateTLID = (req, res) => {
     /* test controller to generate unique id */
