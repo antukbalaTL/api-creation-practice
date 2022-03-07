@@ -66,16 +66,39 @@ const getInfo = async (req, res) => {
     }
 };
 
+// function generateTLID() {
+//     /* method to generate TLID when create a new intern */
+
+//     /* generate a 6 digit unique number */
+//     const id = Math.floor(100000 + Math.random() * 900000);
+
+/* add 'TL' suffix before the generated unique number */
+//     const tlid = 'TL' + id;
+//     // console.log(this.tlid);
+
+//     return tlid;
+//     // res.send(JSON.stringify(tlid));
+// }
+
 const addIntern = async (req, res) => {
     /* controller for add new intern */
 
     /* store values from request body */
     const name = req.body.name;
     const university = req.body.university;
-    const height = req.body.height;
+    const mobile = req.body.mobile;
+
+
+    /* method to generate TLID when create a new intern */
+    /* generate a 6 digit unique number */
+    const id = Math.floor(100000 + Math.random() * 900000); /* stackoverflow */
+
+    /* add 'TL' suffix before the generated unique number */
+    const tlid = 'TL' + id;
+    // console.log(this.tlid);
 
     /* create a new instance of Intern */
-    const intern = new Intern(name, university, height);
+    const intern = new Intern(tlid, name, university, mobile);
 
     /* send response */
     res.send(JSON.stringify(intern));
@@ -115,10 +138,13 @@ const removeIntern = async (req, res) => {
 
 const generateTLID = (req, res) => {
     /* test controller to generate unique id */
-    const id = Math.floor(100000 + Math.random() * 900000);
-    const tlid = 'TL' + id;
-    console.log(id, tlid);
-    res.send(JSON.stringify(tlid));
+
+    // const id = Math.floor(100000 + Math.random() * 900000);
+    // const tlid = 'TL' + id;
+    // console.log(id, tlid);
+    const tlid = 'test id';
+    // console.log(typeof tlid);
+    res.send(tlid);
 }
 
 module.exports = {

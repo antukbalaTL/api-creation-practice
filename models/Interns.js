@@ -3,18 +3,37 @@ const db = require('../config/db');
 
 /* Intern model */
 class Intern {
-    constructor(name, university, height) {
+    constructor(tlid, name, university, mobile) {
+        this.tlid = tlid;
         this.name = name;
         this.university = university;
-        this.height = height;
+        this.mobile = mobile;
     }
+
+    // static generateTLID() {
+    //     /* method to generate TLID when create a new intern */
+
+    //     /* generate a 6 digit unique number */
+    //     const id = Math.floor(100000 + Math.random() * 900000);
+
+    //     /* add 'TL' suffix before the generated unique number */
+    //     this.tlid = 'TL' + id;
+    //     // console.log(this.tlid);
+
+    //     return this.tlid;
+    //     // res.send(JSON.stringify(tlid));
+    // }
 
     async save() {
         /* method to insert new intern */
 
         /* sql query to insert new intern data */
-        const sqlQuery = `insert into details(name, university, height)
-        values('${this.name}', '${this.university}', '${this.height}');`;
+        // const id = Intern.generateTLID();
+        // console.log(`id-${id} mobile-${this.mobile}`);
+        const sqlQuery = `insert into details(tlid, name, university, mobile)
+        values('${this.tlid}','${this.name}', '${this.university}', '${this.mobile}');`;
+        // const sqlQuery = `insert into details(name, university, height)
+        // values('${this.name}', '${this.university}', '${this.height}');`;
 
         /* execute the sql query */
         const newIntern = await db.execute(sqlQuery);
@@ -39,7 +58,7 @@ class Intern {
         /* method to get intern details by TLID */
 
         /* sql query to get details by id */
-        const sqlQuery = `select * from details where id=${id};`;
+        const sqlQuery = `select * from details where sl=${id};`;
 
         /* execute the sql query */
         const intern = await db.execute(sqlQuery);
@@ -70,19 +89,6 @@ class Intern {
 
         /* execute the sql query */
         const remove = await db.execute(sqlQuery);
-    }
-
-    static generateTLID() {
-        /* method to generate TLID when create a new intern */
-
-        /* generate a 6 digit unique number */
-        const id = Math.floor(100000 + Math.random() * 900000);
-
-        /* add 'TL' suffix before the generated unique number */
-        const tlid = 'TL' + id;
-
-        console.log(id, tlid);
-        res.send(JSON.stringify(tlid));
     }
 }
 
