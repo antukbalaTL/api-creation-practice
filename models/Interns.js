@@ -93,11 +93,11 @@ class Intern {
         return this.totalInterns;
     }
 
-    static async removeIntern(id) {
+    static async removeIntern(tlid) {
         /* method to remove an intern */
 
         /* sql query for finding intern id to delete */
-        const sqlQuery = `DELETE FROM details WHERE id=${id};`;
+        const sqlQuery = `DELETE FROM details WHERE tlid='${tlid}';`;
 
         /* execute the sql query */
         const remove = await db.execute(sqlQuery);

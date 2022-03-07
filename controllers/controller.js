@@ -89,6 +89,8 @@ const addIntern = async (req, res) => {
 
         /* send response */
         res.send(intern);
+        console.log(`Added intern- id: ${intern.tlid}, name: ${intern.name}, university: ${intern.university}, mobile: ${intern.mobile}`);
+
         // res.status(200).json({ intern });
 
 
@@ -104,23 +106,24 @@ const addIntern = async (req, res) => {
     return res.send(`User already exist`);
 }
 
-const removeIntern = async (req, res) => {
-    /* controller to remove intern by id */
 
+
+/* controller to remove intern by tlid */
+const removeIntern = async (req, res) => {
     /* store value from request body */
-    const id = req.body.id;
+    const tlid = req.body.tlid;
 
     /* get details of the intern before removing */
-    let removedIntern = await Intern.getInfoById(id);
+    let removedIntern = await Intern.getInfoById(tlid);
     removedIntern = removedIntern[0];
     console.log(removedIntern);
 
     /* remove intern from model */
-    await Intern.removeIntern(id);
+    await Intern.removeIntern(tlid);
 
     /* show who is removed */
     res.send(removedIntern);
-    console.log(`Removed intern- id: ${removedIntern.id}, name: ${removedIntern.name}, university: ${removedIntern.university}, height: ${removedIntern.height}`);
+    console.log(`Removed intern- id: ${removedIntern.tlid}, name: ${removedIntern.name}, university: ${removedIntern.university}, mobile: ${removedIntern.mobile}`);
 };
 
 const generateTLID = (req, res) => {
