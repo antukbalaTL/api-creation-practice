@@ -50,11 +50,11 @@ class Intern {
         return allInterns[0];
     }
 
-    static async getInfoById(id) {
+    static async getInfoById(tlid) {
         /* method to get intern details by TLID */
 
         /* sql query to get details by id */
-        const sqlQuery = `select * from details where tlid='${id}';`;
+        const sqlQuery = `select * from details where tlid='${tlid}';`;
 
         /* execute the sql query */
         const intern = await db.execute(sqlQuery);
@@ -67,6 +67,22 @@ class Intern {
     static async alreadyExist(mobile) {
         /* sql query for counting total interns */
         const sqlQuery = `select count(tlid) from details where mobile='${mobile}';`;
+
+        /* execute the sql query */
+        const result = await db.execute(sqlQuery);
+
+        // console.log(result[0][0]);
+
+        return result[0][0]['count(tlid)'];
+        // console.log(result[0]);
+    }
+
+
+
+    /* method to check tlid exist or not */
+    static async tlidExist(tlid) {
+        /* sql query for checking tlid exist or not */
+        const sqlQuery = `select count(tlid) from details where tlid='${tlid}';`;
 
         /* execute the sql query */
         const result = await db.execute(sqlQuery);
@@ -111,6 +127,36 @@ class Intern {
 
         /* execute the sql query2 */
         const remove = await db.execute(sqlQuery2);
+    }
+
+
+    /* method to update name of intern */
+    static async updateName(tlid, name) {
+        /* sql query to update name */
+        var sqlQuery = `update details set name='${name}' where tlid='${tlid}';`;
+
+        /* execute the sql query */
+        await db.execute(sqlQuery);
+    }
+
+
+    /* method to update university of intern */
+    static async updateUniversity(tlid, university) {
+        /* sql query to update university */
+        var sqlQuery = `update details set university='${university}' where tlid='${tlid}';`;
+
+        /* execute the sql query */
+        await db.execute(sqlQuery);
+    }
+
+
+    /* method to update mobile of intern */
+    static async updateMobile(tlid, mobile) {
+        /* sql query to update mobile */
+        var sqlQuery = `update details set mobile='${mobile}' where tlid='${tlid}';`;
+
+        /* execute the sql query */
+        await db.execute(sqlQuery);
     }
 }
 

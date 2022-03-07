@@ -47,13 +47,14 @@ const allInterns = async (req, res) => {
 const getInfo = async (req, res) => {
     try {
         /* store value of id from url */
-        const id = req.params.tlid;
+        const tlid = req.params.tlid;
+        // console.log(tlid);
 
         /* if not number or not valid id then return this */
         // if (Number.isNaN(id) || id > await Intern.countHead()) return res.send(`invalid id, enter a valid id`);
 
         /* if valid then get info of that id */
-        const intern = Intern.getInfoById(id);
+        const intern = await Intern.getInfoById(tlid);
 
         res.status(200).json({ intern });
     } catch (err) {
@@ -135,6 +136,55 @@ const removeIntern = async (req, res) => {
 
 
 
+/* controller to update info */
+const updateInfo = async (req, res) => {
+    /* store value of tlid from url */
+    const tlid = req.params.tlid;
+    /* store values from request body */
+    const { name, university, mobile } = req.body;
+
+
+    /* check tlid exist or not */
+    const tlidExisted = await Intern.tlidExist(tlid);
+
+
+    /* if tlid doesn't exist then return this */
+    if (tlidExisted === 0) {
+        console.log(`TL Id doesn't exist`);
+        return res.send(`TL Id doesn't exist`);
+    }
+    /* if tlid exist then update info */
+    else {
+        /* log changes */
+        let changes = `Updated details of tlid(${tlid}):`;
+
+
+        /* if get name in body */
+        if (name) {
+            changes += ` name-${name}`; /* update change */
+            await Intern.updateName(tlid, name); /* update name on model */
+        }
+
+
+        /* if get university in body */
+        if (university) {
+            changes += ` university-${university}`; /* update change */
+            await Intern.updateUniversity(tlid, university); /* update university on model */
+        }
+
+
+        /* if get mobile in body */
+        if (mobile) {
+            changes += ` mobile-${mobile}`; /* update change */
+            await Intern.updateMobile(tlid, mobile); /* update mobile on model */
+        }
+
+        res.send(changes); /* log changes */
+    }
+}
+
+
+
 const generateTLID = (req, res) => {
     /* test controller to generate unique id */
 
@@ -146,11 +196,14 @@ const generateTLID = (req, res) => {
     res.send(tlid);
 }
 
+
+
 module.exports = {
     homepage,
     allInterns,
     getInfo,
     addIntern,
     removeIntern,
-    generateTLID
+    generateTLID,
+    updateInfo
 };
