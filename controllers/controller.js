@@ -1,9 +1,9 @@
 require('dotenv').config(); /* for using .env details */
 const Intern = require('../models/Interns');
 
-const homepage = (req, res) => {
-    /* controller for homepage */
 
+/* controller for homepage */
+const homepage = (req, res) => {
     /* creating links for all routes */
     const homeRoute = `http://localhost:${process.env.PORT}/`;
     const allInternsRoute = `${homeRoute}allInterns/`;
@@ -26,13 +26,10 @@ const homepage = (req, res) => {
     res.send(allRoutes);
 };
 
+
+
+/* controller for all intern page */
 const allInterns = async (req, res) => {
-    /* controller for all intern page */
-
-    // res.send('working..');
-    // res.send(JSON.stringify(Intern.findAll()));
-    // console.log(Intern);
-
     try {
         /* get all intern data from model */
         const allInterns = await Intern.findAll();
@@ -45,19 +42,18 @@ const allInterns = async (req, res) => {
     }
 };
 
-const getInfo = async (req, res) => {
-    /* controller for get info by id page */
 
+/* controller to get info by id page */
+const getInfo = async (req, res) => {
     try {
         /* store value of id from url */
-        const id = req.params.id;
-        // console.log(typeof id, id);
+        const id = req.params.tlid;
 
         /* if not number or not valid id then return this */
         // if (Number.isNaN(id) || id > await Intern.countHead()) return res.send(`invalid id, enter a valid id`);
 
         /* if valid then get info of that id */
-        const intern = await Intern.getInfoById(id);
+        const intern = Intern.getInfoById(id);
 
         res.status(200).json({ intern });
     } catch (err) {
@@ -66,55 +62,46 @@ const getInfo = async (req, res) => {
     }
 };
 
-// function generateTLID() {
-//     /* method to generate TLID when create a new intern */
 
-//     /* generate a 6 digit unique number */
-//     const id = Math.floor(100000 + Math.random() * 900000);
 
-/* add 'TL' suffix before the generated unique number */
-//     const tlid = 'TL' + id;
-//     // console.log(this.tlid);
-
-//     return tlid;
-//     // res.send(JSON.stringify(tlid));
-// }
-
+/* controller to add new intern */
 const addIntern = async (req, res) => {
-    /* controller for add new intern */
-
     /* store values from request body */
     const name = req.body.name;
     const university = req.body.university;
     const mobile = req.body.mobile;
 
 
-    /* method to generate TLID when create a new intern */
-    /* generate a 6 digit unique number */
-    const id = Math.floor(100000 + Math.random() * 900000); /* stackoverflow */
+    /* check mobile number already used or not */
+    const usedOrNot = await Intern.alreadyExist(mobile);
 
-    /* add 'TL' suffix before the generated unique number */
-    const tlid = 'TL' + id;
-    // console.log(this.tlid);
+    /* if number not used then create new intern */
+    if (usedOrNot === 0) {
+        /* method to generate TLID when create a new intern */
+        /* generate a 6 digit unique number */
+        const id = Math.floor(100000 + Math.random() * 900000); /* stackoverflow */
 
-    /* create a new instance of Intern */
-    const intern = new Intern(tlid, name, university, mobile);
+        /* add 'TL' suffix before the generated unique number */
+        const tlid = 'TL' + id;
 
-    /* send response */
-    res.send(JSON.stringify(intern));
+        /* create a new instance of Intern */
+        const intern = new Intern(tlid, name, university, mobile);
 
-    // let intern = new Intern('test name', 'test uni', 'test height');
+        /* send response */
+        res.send(intern);
+        // res.status(200).json({ intern });
 
-    try {
-        /* insert the new intern in model */
-        const saveIntern = await intern.save();
-        // console.log(intern);
-    } catch (error) {
-        console.log(error);
+
+        try {
+            /* insert the new intern in model */
+            return await intern.save();
+        } catch (error) {
+            console.log(error);
+        }
     }
 
-    // res.send(`new intern added ${name} ${intern.name}`);
-    // res.send(JSON.stringify(intern));
+    /* if number used then send this */
+    return res.send(`User already exist`);
 }
 
 const removeIntern = async (req, res) => {

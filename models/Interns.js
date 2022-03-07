@@ -28,12 +28,8 @@ class Intern {
         /* method to insert new intern */
 
         /* sql query to insert new intern data */
-        // const id = Intern.generateTLID();
-        // console.log(`id-${id} mobile-${this.mobile}`);
         const sqlQuery = `insert into details(tlid, name, university, mobile)
         values('${this.tlid}','${this.name}', '${this.university}', '${this.mobile}');`;
-        // const sqlQuery = `insert into details(name, university, height)
-        // values('${this.name}', '${this.university}', '${this.height}');`;
 
         /* execute the sql query */
         const newIntern = await db.execute(sqlQuery);
@@ -66,21 +62,33 @@ class Intern {
         return intern[0];
     }
 
+
+    /* method to check mobile number already used or not */
     static async alreadyExist(mobile) {
 
+        /* sql query for counting total interns */
+        const sqlQuery = `select count(tlid) from details where mobile='${mobile}';`;
+
+        /* execute the sql query */
+        const result = await db.execute(sqlQuery);
+
+        // console.log(result[0][0]);
+
+        return result[0][0]['count(tlid)'];
+        // console.log(result[0]);
     }
 
     static async countHead() {
         /* method to count total number of interns */
 
         /* sql query for counting total interns */
-        const sqlQuery = `select count(id) from details;`;
+        const sqlQuery = `select count(tlid) from details;`;
 
         /* execute the sql query */
         this.totalInterns = await db.execute(sqlQuery);
 
         /* removed extra details and stored just numeric value */
-        this.totalInterns = this.totalInterns[0][0]['count(id)'];
+        this.totalInterns = this.totalInterns[0][0]['count(tlid)'];
 
         return this.totalInterns;
     }
