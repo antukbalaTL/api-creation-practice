@@ -50,11 +50,11 @@ const getInfo = async (req, res) => {
 
     try {
         /* store value of id from url */
-        const id = parseInt(req.params.id);
+        const id = req.params.id;
         // console.log(typeof id, id);
 
         /* if not number or not valid id then return this */
-        if (Number.isNaN(id) || id > await Intern.countHead()) return res.send(`invalid id, enter a valid id`);
+        // if (Number.isNaN(id) || id > await Intern.countHead()) return res.send(`invalid id, enter a valid id`);
 
         /* if valid then get info of that id */
         const intern = await Intern.getInfoById(id);

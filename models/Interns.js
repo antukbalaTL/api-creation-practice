@@ -58,12 +58,16 @@ class Intern {
         /* method to get intern details by TLID */
 
         /* sql query to get details by id */
-        const sqlQuery = `select * from details where sl=${id};`;
+        const sqlQuery = `select * from details where tlid='${id}';`;
 
         /* execute the sql query */
         const intern = await db.execute(sqlQuery);
 
         return intern[0];
+    }
+
+    static async alreadyExist(mobile) {
+
     }
 
     static async countHead() {
